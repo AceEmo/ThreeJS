@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+		<script type="importmap">
+			{ "imports": {
+				"three": "https://cdn.jsdelivr.net/npm/three@0.164.0/build/three.module.js"
+			} }
+		</script>
+	</head>
+	<body>
+		<script type="module">
+		
+			import * as THREE from "three";
+			
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.setAnimationLoop( drawFrame );
+			document.body.appendChild( renderer.domElement );
+
+			var scene = new THREE.Scene();
+			
+			var aspect = window.innerWidth/window.innerHeight;
+			var camera = new THREE.PerspectiveCamera( 30, aspect );
+
+            function createBearing(n) {
+                var bearing = new THREE.Group();
+                var torus1Geometry = new THREE.TorusGeometry(1.8, 0.4, 16, 80);
+                var torus1Material = new THREE.MeshBasicMaterial({ color: "red" });
+                var torus1 = new THREE.Mesh(torus1Geometry, torus1Material);
+                bearing.add(torus1);
+
+                var torus2Geometry = new THREE.TorusGeometry(0.8, 0.4, 16, 80);
+                var torus2Material = new THREE.MeshBasicMaterial({ color: "#8B0000" });
+                var torus2 = new THREE.Mesh(torus2Geometry, torus2Material);
+                bearing.add(torus2);
+
+                var radius = 1.3;
+                var sphereRadius = 0.25;
+                var sphereMaterial = new THREE.MeshBasicMaterial({ color: "#C0C0C0" });
+
+                for (let i = 0; i < n; i++) {
+                    var angle = (i / n) * Math.PI * 2;
+                    var x = radius * Math.cos(angle);
+                    var y = radius * Math.sin(angle);
+
+                    var sphereGeometry = new THREE.SphereGeometry(sphereRadius, 16, 16);
+                    var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+                    sphere.position.set(x, y, 0);
+                    bearing.add(sphere);
+                }
+
+                return bearing;
+            }
+            var StaticletterN = new THREE.Group();
+
+            var bearing1 = createBearing(12);
+            bearing1.rotation.set(0, Math.PI / 2, 0);
+            bearing1.position.set(0.5, 0, 0);
+            StaticletterN.add(bearing1);
+
+            var bearing2 = createBearing(12);
+            bearing2.rotation.set(0, Math.PI / 2, 0);
+            bearing2.position.set(2.5, 0, 0);
+            StaticletterN.add(bearing2);
+
+            var bearing3 = createBearing(12);
+            bearing3.rotation.set(Math.PI / 2, -Math.PI / 3, 0);
+            bearing3.position.set(1.5, 0, 0);
+
+            StaticletterN.position.set(0, 0, 0);
+            StaticletterN.add(bearing3);
+
+            var DynamicletterN = StaticletterN.clone();
+            DynamicletterN.position.set(-5, 0, 0);
+            scene.add(DynamicletterN);
+
+            scene.add(StaticletterN);
+
+            var bearing = createBearing(12);
+            bearing.rotation.set(0, -Math.PI / 8, 0);
+            bearing.position.set(8, 0, 0);
+            scene.add(bearing);
+
+            camera.position.set(1.5, 0, 20);
+            camera.lookAt(1.5, 0, 0);
+
+            var skye = new THREE.Mesh(new THREE.SphereGeometry(100, 32, 32), new THREE.MeshBasicMaterial({color: 'lightblue'}));
+			skye.material.side = THREE.DoubleSide;
+			scene.add(skye);
+
+			var light = new THREE.PointLight( 'white', 1000 );
+			light.position.set( 17, 14, 11 );
+			scene.add( light );
+
+			light = new THREE.PointLight( 'white', 1000 );
+			light.position.set( -17, -14, -11 );
+			scene.add( light );
+
+			function drawFrame( t ) {
+                DynamicletterN.rotation.y = t / 1000;
+				renderer.render( scene, camera );
+			}
+		</script>
+	</body>
+</html>

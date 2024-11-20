@@ -1,0 +1,447 @@
+<html>
+	<head>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+		<script type="importmap">
+			{ "imports": {
+				"three": "https://cdn.jsdelivr.net/npm/three@0.164.0/build/three.module.js"
+			} }
+		</script>
+	</head>
+	<body>
+		<script type="module">
+		
+			import * as THREE from "three";
+			
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.setAnimationLoop( drawFrame );
+			document.body.appendChild( renderer.domElement );
+
+			var scene = new THREE.Scene();
+			
+			var aspect = window.innerWidth/window.innerHeight;
+			var camera = new THREE.PerspectiveCamera( 30, aspect );
+			camera.position.set( 0, 4, 45 );
+			camera.lookAt( 0, 4, 40 );
+
+			var ambientLight = new THREE.AmbientLight(0x404040, 1.5);
+        	scene.add(ambientLight);
+
+			var geometry = new THREE.BoxGeometry( 30, 1, 70 );
+			var material = new THREE.MeshPhongMaterial({color: 'orange'});	
+			scene.add( new THREE.Mesh( geometry, material ) );
+
+			var geometry = new THREE.BoxGeometry( 10, 12, 10 );
+			var material = new THREE.MeshPhongMaterial({color: '#8b4a3c'});
+			scene.add( new THREE.Mesh( geometry, material ) );
+
+			var geometry = new THREE.BoxGeometry( 10, 0.5, 12 );
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 0, 6, 4);
+			scene.add( building );
+
+			var geometry = new THREE.BoxGeometry( 18, 12.5, 12 );
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 0, 0, -4 );
+			scene.add( building );
+			
+			var geometry = new THREE.BoxGeometry( 0.3, 6, 0.1 );
+			var material = new THREE.MeshPhongMaterial({color: 'white'});
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( -8.9, 3.25, 2);
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 8.9, 3.25, 2);
+			scene.add( building );
+
+			var geometry = new THREE.BoxGeometry( 0.3, 7.1, 0.1 );
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 6.4, 8.65, 1.9);
+			building.rotation.z = Math.PI / 4;
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( -6.4, 8.65, 1.9);
+			building.rotation.z = -Math.PI / 4;
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 2.5, 8.9, 1.9);
+			building.rotation.z = Math.PI / 4;
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( -2.5, 8.8, 1.9);
+			building.rotation.z = -Math.PI / 4;
+			scene.add( building );
+
+			var geometry = new THREE.BoxGeometry( 0.3, 2.6, 0.1 );
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 3, 10.1, 1.9);
+			building.rotation.z = -Math.PI / 4;
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( -3, 10.1, 1.9);
+			building.rotation.z = Math.PI / 4;
+			scene.add( building );
+
+			var geometry = new THREE.BoxGeometry(7, 7, 1);
+			var material = new THREE.MeshBasicMaterial({color: '#0a9799'});
+			var box = new THREE.Mesh(geometry, material);
+			box.position.set(0, 6.3, 1.4);
+			box.rotation.z = Math.PI / 4;
+			scene.add(box);
+
+			var box = new THREE.Mesh(geometry, material);
+			box.position.set(-4, 6.3, 1.4);
+			box.rotation.z = Math.PI / 4;
+			scene.add(box);
+
+			var box = new THREE.Mesh(geometry, material);
+			box.position.set(4, 6.3, 1.4);
+			box.rotation.z = Math.PI / 4;
+			scene.add(box);
+
+			var geometry = new THREE.CylinderGeometry(0.5, 0.5, 6, 100);
+			var material = new THREE.MeshBasicMaterial();
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(4.4, 3.2, 8);
+			scene.add(prism);
+
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(-4.4, 3.2, 8);
+			scene.add(prism);
+
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(-1.5, 3.2, 8);
+			scene.add(prism);
+
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(1.5, 3.2, 8);
+			scene.add(prism);
+
+			var geometry = new THREE.BoxGeometry( 1.4, 1, 1.4 );
+			var material = new THREE.MeshPhongMaterial({color: 'grey'});
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 4.4, 1, 8);
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( -4.4, 1, 8);
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 1.5, 1, 8);
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( -1.5, 1, 8);
+			scene.add( building );
+
+			var geometry = new THREE.BoxGeometry( 1.6, 3, 0.1 );
+			var material = new THREE.MeshPhongMaterial({color: 'grey'});
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 0, 1, 5);
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( 3.2, 1, 5);
+			scene.add( building );
+
+			var building = new THREE.Mesh( geometry, material );
+			building.position.set( -3.2, 1, 5);
+			scene.add( building );
+
+			var geometry = new THREE.TorusGeometry(0.95, 0.2, 2, 30);
+			var material = new THREE.MeshBasicMaterial({ color: 'grey' });
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(0, 4, 5.2);
+			scene.add(oval);
+
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(3.2, 4, 5.2);
+			scene.add(oval);
+
+
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(-3.2, 4, 5.2);
+			scene.add(oval);
+
+
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(6.6, 4, 2.2);
+			scene.add(oval);
+
+
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(-6.6, 4, 2.2);
+			scene.add(oval);
+
+
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(-11, 7, 2.2);
+			scene.add(oval);
+
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(11, 7, 2.2);
+			scene.add(oval);
+
+			var geometry = new THREE.SphereGeometry(1, 32, 32);
+			var material = new THREE.MeshBasicMaterial({ color: 'yellow' });
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(0, 4, 5);
+			var light = new THREE.PointLight( 'yellow', 100 );	
+			light.AmbientLight = 5;
+			oval.add( light );
+			scene.add(oval);
+			
+			var material = new THREE.MeshBasicMaterial({ color: 'green' });
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(3.2, 4, 5);
+			var light = new THREE.PointLight( 'green', 100 );
+			oval.add( light );
+			scene.add(oval);
+
+			var material = new THREE.MeshBasicMaterial({ color: 'green' });
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(-3.2, 4, 5);
+			var light = new THREE.PointLight( 'green', 100 );
+			oval.add( light );
+			scene.add(oval);
+			
+			var material = new THREE.MeshBasicMaterial({ color: 'red' });
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(6.6, 4, 2);
+			var light = new THREE.PointLight( 'red', 100 );
+			oval.add( light );
+			scene.add(oval);
+
+			var material = new THREE.MeshBasicMaterial({ color: 'red' });
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(-6.6, 4, 2);
+			var light = new THREE.PointLight( 'red', 100 );
+			oval.add( light );
+			scene.add(oval);
+
+			var material = new THREE.MeshBasicMaterial({ color: 'yellow' });
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(-11, 7, 1.8);
+			var light = new THREE.PointLight( 'yellow', 100 );
+			oval.add( light );
+			scene.add(oval);
+
+			var material = new THREE.MeshBasicMaterial({ color: 'yellow' });
+			var oval = new THREE.Mesh(geometry, material);
+			oval.scale.set(0.8, 1.2, 1);
+			oval.position.set(11, 7, 1.8);
+			var light = new THREE.PointLight( 'yellow', 100 );
+			oval.add( light );
+			scene.add(oval);
+
+			var geometry = new THREE.CylinderGeometry(2, 2, 10, 100);
+			var material = new THREE.MeshBasicMaterial({color: 'brown'});
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(10.9, 5, 0);
+			scene.add(prism);
+			
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(-10.9, 5, 0);
+			scene.add(prism);
+
+			var geometry = new THREE.SphereGeometry(2, 32, 32);
+			var material = new THREE.MeshBasicMaterial({color: '#0a9799'});
+			var sphere = new THREE.Mesh(geometry, material);
+			sphere.position.set(10.9, 10, 0);
+			scene.add(sphere);
+
+			var sphere = new THREE.Mesh(geometry, material);
+			sphere.position.set(-10.9, 10, 0);
+			scene.add(sphere);
+
+			var geometry = new THREE.CylinderGeometry(2.2, 2.2, 0.4, 100);
+			var material = new THREE.MeshBasicMaterial();
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(10.9, 10, 0);
+			scene.add(prism);
+
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(-10.9, 10, 0);
+			scene.add(prism);
+
+			var geometry = new THREE.CylinderGeometry(2.01, 2.01, 2, 100);
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(-10.9, 2, 0);
+			scene.add(prism);
+
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(10.9, 2, 0);
+			scene.add(prism);
+
+			var geometry = new THREE.CylinderGeometry(2.2, 2.2, 0.6, 100);
+			var material = new THREE.MeshBasicMaterial({color: 'grey'});
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(10.9, 0.8, 0);
+			scene.add(prism);
+
+			var prism = new THREE.Mesh(geometry, material);
+			prism.position.set(-10.9, 0.8, 0);
+			scene.add(prism);
+
+			var feather = new THREE.Group();
+			var featherGeometry = new THREE.SphereGeometry(1.5, 32, 32);
+			var featherMaterial = new THREE.MeshBasicMaterial({color: 'white'});
+			var feather1 = new THREE.Mesh(featherGeometry, featherMaterial);
+			feather1.scale.set(0.8, 2, 1);
+			feather1.position.set(8, 4.5 , 22);	
+			feather1.rotation.z = -Math.PI / 24;
+			feather.add(feather1);
+
+			var down = new THREE.BoxGeometry( 0.3, 1.2, 0.3 );
+			var material = new THREE.MeshPhongMaterial({color: 'white'});
+			var building = new THREE.Mesh( down, material );
+			building.position.set( 7.5, 1, 22);
+			building.rotation.z = -Math.PI / 24;
+			feather.add( building );
+
+			var onto = new THREE.BoxGeometry( 0.1, 4, 0.1 );
+			var material = new THREE.MeshPhongMaterial({color: 'white'});
+			var building = new THREE.Mesh( onto, material );
+			building.position.set( 7, 4.5 , 25);
+			building.rotation.z = -Math.PI / 24;
+			feather.add( building );
+
+			var onto = new THREE.BoxGeometry( 0.1, 1.2, 0.1 );
+			var material = new THREE.MeshPhongMaterial({color: 'white'});
+			var building = new THREE.Mesh( onto, material );
+			building.position.set( 7.5, 5.5 , 25);
+			building.rotation.z = -Math.PI / 4;
+			feather.add( building );
+
+			var building = new THREE.Mesh( onto, material );
+			building.position.set( 7.4, 4.5 , 25);
+			building.rotation.z = -Math.PI / 4;
+			feather.add( building );
+
+			var building = new THREE.Mesh( onto, material );
+			building.position.set( 7.3, 3.5 , 25);
+			building.rotation.z = -Math.PI / 4;
+			feather.add( building );
+
+			var building = new THREE.Mesh( onto, material );
+			building.position.set( 6.7, 5.5 , 25);
+			building.rotation.z = Math.PI / 4;
+			feather.add( building );
+
+			var building = new THREE.Mesh( onto, material );
+			building.position.set( 6.6, 4.5 , 25);
+			building.rotation.z = Math.PI / 4;
+			feather.add( building );
+
+			var building = new THREE.Mesh( onto, material );
+			building.position.set( 6.4, 3.5 , 25);
+			building.rotation.z = Math.PI / 4;
+			feather.add( building );
+
+			scene.add(feather);
+
+			var ground = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshPhongMaterial({color: 'green'}));
+			ground.rotation.x = -Math.PI / 2;
+			ground.position.y = -0.5;
+			scene.add(ground);
+
+			var skye = new THREE.Mesh(new THREE.SphereGeometry(100, 32, 32), new THREE.MeshBasicMaterial({color: 'lightblue'}));
+			skye.material.side = THREE.DoubleSide;
+			scene.add(skye);
+			
+			var pavet = new THREE.BoxGeometry( 0.5, 10, 0.5 );
+			var material = new THREE.MeshPhongMaterial({color: 'grey'});
+			var building = new THREE.Mesh( pavet, material );
+			building.position.set( 0, 0.5, 29.45);
+			building.rotation.z = Math.PI / 2;
+			scene.add( building );
+
+			var pavet = new THREE.BoxGeometry( 0.5, 10, 0.5 );
+			var building = new THREE.Mesh( pavet, material );
+			building.position.set( 0, 0.5, 15);
+			building.rotation.z = Math.PI / 2;
+			scene.add( building );
+
+			var pavet = new THREE.BoxGeometry( 0.5, 15, 0.5 );
+			var building = new THREE.Mesh( pavet, material );
+			building.position.set( 4.85, 0.5, 22.2);
+			building.rotation.z = Math.PI / 2;
+			building.rotation.y = Math.PI / 2;
+			scene.add( building );
+
+			var pavet = new THREE.BoxGeometry( 0.5, 15, 0.5 );
+			var building = new THREE.Mesh( pavet, material );
+			building.position.set( -4.85, 0.5, 22.2);
+			building.rotation.z = Math.PI / 2;
+			building.rotation.y = Math.PI / 2;
+			scene.add( building );
+
+			var lake = new THREE.BoxGeometry( 9.2, 0.5, 14 );
+			var material = new THREE.MeshPhongMaterial({color: 'blue'});
+			var building = new THREE.Mesh( lake, material );
+			building.position.set( 0, 0.3, 22.2);
+			scene.add( building );
+			
+			var bench = new THREE.BoxGeometry( 1.5, 0.5, 3 );
+			var material = new THREE.MeshPhongMaterial({color: 'brown'});
+			var building = new THREE.Mesh( bench, material );
+			building.position.set( -8, 0.7, 20);
+			scene.add( building );
+
+			var bench = new THREE.BoxGeometry( 1.5, 0.5, 3 );
+			var material = new THREE.MeshPhongMaterial({color: 'brown'});
+			var building = new THREE.Mesh( bench, material );
+			building.position.set( -8, 0.7, 26);
+			scene.add( building );
+
+			var bench = new THREE.BoxGeometry( 0.5, 1, 3 );
+			var material = new THREE.MeshPhongMaterial({color: 'brown'});
+			var building = new THREE.Mesh( bench, material );
+			building.position.set( -8.5, 1, 20);
+			scene.add( building );
+
+			var bench = new THREE.BoxGeometry( 0.5, 1, 3 );
+			var material = new THREE.MeshPhongMaterial({color: 'brown'});
+			var building = new THREE.Mesh( bench, material );
+			building.position.set( -8.5, 1, 26);
+			scene.add( building );
+
+			var light = new THREE.PointLight( 'white', 100 );
+			light.position.set( 0, 8, 11 );
+			light.AmbientLight = 5;
+			scene.add( light );
+			
+			var sun = new THREE.Mesh(new THREE.SphereGeometry(5, 32, 32), new THREE.MeshBasicMaterial({color: 'yellow'}));
+			sun.position.set(15, 20, -40);
+			scene.add(sun);
+
+
+			function drawFrame( t ) {
+				renderer.render( scene, camera );
+			}
+			
+		</script>
+	</body>
+</html>

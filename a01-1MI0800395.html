@@ -1,0 +1,284 @@
+<html>
+	<head>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+		<script type="importmap">
+			{ "imports": {
+				"three": "https://cdn.jsdelivr.net/npm/three@0.164.0/build/three.module.js"
+			} }
+		</script>
+	</head>
+	<body>
+		<script type="module">
+		
+			import * as THREE from "three";
+			
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.setAnimationLoop( drawFrame );
+			document.body.appendChild( renderer.domElement );
+
+			var scene = new THREE.Scene();
+			
+			var aspect = window.innerWidth/window.innerHeight;
+			var camera = new THREE.PerspectiveCamera( 30, aspect );
+			camera.position.set( -4, 3, 10 );
+			camera.lookAt( scene.position );
+
+			
+			// повърхност
+			var geometry = new THREE.BoxGeometry( 10, 0.1, 10 );
+			var material = new THREE.MeshPhongMaterial({color: '#9c9ca4'});
+			var obj = new THREE.Mesh( geometry, material );
+            obj.position.set(0, 0.1, 0);
+			scene.add( obj );
+
+            // пътна маркировка
+            geometry = new THREE.BoxGeometry( 1, 0.1, 0.1 );
+            material = new THREE.MeshPhongMaterial({color: 'white'});
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-2, 0.11, 3);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-4, 0.11, 3);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(0, 0.11, 3);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(2, 0.11, 3);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(4, 0.11, 3);
+            scene.add( obj );
+
+            // главна сграда
+            geometry = new THREE.BoxGeometry( 6, 2.2, 3 );
+            material = new THREE.MeshPhongMaterial( {color: '#db3d36'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-1, 1.2, 0);
+            scene.add( obj );
+
+            // втора сграда
+            geometry = new THREE.BoxGeometry( 2, 1.5, 2 );
+            material = new THREE.MeshPhongMaterial( {color: '#db3d36'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(3, 0.82, 0);
+            scene.add( obj );
+
+            // висока стена
+            geometry = new THREE.BoxGeometry( 0.3, 2, 0.5 );
+            material = new THREE.MeshPhongMaterial( {color: 'grey'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(4, 1.8, 1);
+            scene.add( obj );
+
+            // линии по високата стена
+            geometry = new THREE.BoxGeometry( 0.31, 0.1, 0.51 );
+            material = new THREE.MeshPhongMaterial( {color: 'white'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(4, 2.5, 1);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(4, 2, 1);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(4, 1.5, 1);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(4, 1, 1);
+            scene.add( obj );
+
+            // навес над входа
+            geometry = new THREE.BoxGeometry( 3, 0.2, 0.6 );
+            material = new THREE.MeshPhongMaterial( {color: '#f6e03d'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-0.3, 1.45, 1.75);
+            scene.add( obj );
+
+            // вход (врата - лява и дясна част)
+            geometry = new THREE.BoxGeometry( 1.30, 1.2, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: 'grey'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-1, 0.75, 1.5);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(0.4, 0.75, 1.5);
+            scene.add( obj );
+
+            // вход (лява рамка, дясна рамка, средна рамка)
+            geometry = new THREE.BoxGeometry( 0.1, 1.2, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: 'white'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-1.7, 0.75, 1.5);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(1.1, 0.75, 1.5);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-0.3, 0.75, 1.5);
+            scene.add( obj );
+            
+            // допълнителна стена отляво на вратата
+            geometry = new THREE.BoxGeometry( 1.60, 1, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: '#f6e03d'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-2.9, 1, 1.5);
+            scene.add( obj );
+
+            // постери на стената
+            geometry = new THREE.BoxGeometry( 0.6, 0.6, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: 'cyan'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-3.3, 1.1, 1.55);
+            scene.add( obj );
+            material = new THREE.MeshPhongMaterial( {color: 'pink'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-2.5, 1.1, 1.55);
+            scene.add( obj );
+
+            // плочи за покривите
+            geometry = new THREE.BoxGeometry( 6.2, 0.1, 3.2 );
+            material = new THREE.MeshPhongMaterial( {color: '#f6e03d'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-1, 2.3, 0);
+            scene.add( obj );
+            geometry = new THREE.BoxGeometry( 2.2, 0.1, 2.2 );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(3, 1.6, 0);
+            scene.add( obj );
+
+            // контейнер
+            geometry = new THREE.BoxGeometry( 0.5, 0.5, 2 );
+            material = new THREE.MeshPhongMaterial( {color: 'green'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-4.2, 0.4, 0);
+            scene.add( obj );
+
+            // капак на контейнера
+            geometry = new THREE.BoxGeometry( 0.6, 0.1, 2 );
+            material = new THREE.MeshPhongMaterial( {color: 'black'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-4.2, 0.7, 0);
+            scene.add( obj );
+
+            //правим буквите К И Н О
+            // буква К
+            var c = 0.2;
+            geometry = new THREE.BoxGeometry( 0.1, 0.5, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: 'white'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-1.2 + c, 1.9, 1.5);
+            scene.add( obj );
+            geometry = new THREE.BoxGeometry( 0.1, 0.35, 0.1 );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-1.08 + c, 1.8, 1.5);
+            obj.rotation.z = Math.PI/4;
+            scene.add( obj );
+            geometry = new THREE.BoxGeometry( 0.1, 0.35, 0.1 );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-1.08 + c, 2, 1.5);
+            obj.rotation.z = -Math.PI/4;
+            scene.add( obj );
+
+            // буква И
+            geometry = new THREE.BoxGeometry( 0.1, 0.5, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: 'white'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-0.8 + c, 1.9, 1.5);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-0.6 + c, 1.9, 1.5);
+            scene.add( obj );
+            geometry = new THREE.BoxGeometry( 0.1, 0.4, 0.1 );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-0.7 + c, 1.9, 1.5);
+            obj.rotation.z = -Math.PI/6;
+            scene.add( obj );
+
+            // буква Н
+            geometry = new THREE.BoxGeometry( 0.1, 0.5, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: 'white'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-0.4 + c, 1.9, 1.5);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-0.2 + c, 1.9, 1.5);
+            scene.add( obj );
+            geometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-0.3 + c, 1.9, 1.5);
+            scene.add( obj );
+
+            // буква О
+            geometry = new THREE.BoxGeometry( 0.1, 0.4, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: 'white'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(0 + c, 1.9, 1.5);
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(0.2 + c, 1.9, 1.5);
+            scene.add( obj );
+            geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.1 );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(0.1 + c, 1.7, 1.5);
+            obj.rotation.z = Math.PI/2;
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(0.1 + c, 2.1, 1.5);
+            obj.rotation.z = Math.PI/2;
+            scene.add( obj );
+
+            //правим буквите X и D
+            // буква X
+            geometry = new THREE.BoxGeometry( 0.1, 0.5, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: 'pink'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-3.1, 1.9, 1.5);
+            obj.rotation.z = Math.PI/4;
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-3.1, 1.9, 1.5);
+            obj.rotation.z = -Math.PI/4;
+            scene.add( obj );
+        
+            // буква D
+            geometry = new THREE.BoxGeometry( 0.1, 0.4, 0.1 );
+            material = new THREE.MeshPhongMaterial( {color: 'cyan'} );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-2.8, 1.9, 1.5);
+            scene.add( obj );
+            geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.1 );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-2.6, 1.9, 1.5);
+            scene.add( obj );
+            geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.1 );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-2.7, 1.75, 1.5);
+            obj.rotation.z = Math.PI/2;
+            scene.add( obj );
+            obj = new THREE.Mesh( geometry, material );
+            obj.position.set(-2.7, 2.05, 1.5);
+            obj.rotation.z = Math.PI/2;
+            scene.add( obj );   
+
+			var light = new THREE.PointLight( 'white', 1000 );
+			light.position.set( 17, 14, 11 );
+			scene.add( light );
+
+			light = new THREE.PointLight( 'white', 1000 );
+			light.position.set( -17, -14, -11 );
+			scene.add( light );
+
+
+            // използвах въртенето от седмица 2 след което го преработих чрез библиотеката math
+			function drawFrame( t ) {
+                scene.rotation.y = Math.sin(t / 2000) * (Math.PI / 4); // въртене на 40 градуса
+				renderer.render( scene, camera );
+			}
+			
+		</script>
+	</body>
+</html>
