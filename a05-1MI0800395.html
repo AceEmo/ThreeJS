@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three.js Cork Animation</title>
+  <style>
+    body { margin: 0; }
+    canvas { width: 100%; height: 100%; display: block; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.164.0/build/three.module.js",
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.2/index.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <script type="module">
+    import * as THREE from 'three';
+    import { gsap } from 'gsap';
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    scene.background = new THREE.Color(0x87CEEB);
+
+    var bottleMaterial = new THREE.MeshStandardMaterial({ color: 0xb40036, roughness: 0.2, metalness: 0.5 });
+    var corkMaterial = new THREE.MeshStandardMaterial({ color: 0xA5846A });
+    var labelMaterial = new THREE.MeshStandardMaterial({ color: "orange"});
+
+    var createBottle = (x, y, z) => {
+      var group = new THREE.Group();
+
+      var bodyGeometry = new THREE.CylinderGeometry(0.5, 0.5, 3, 32);
+      var body = new THREE.Mesh(bodyGeometry, bottleMaterial);
+      group.add(body);
+
+      var shoulderGeometry = new THREE.SphereGeometry(0.5, 32, 32, Math.PI);
+      var shoulder = new THREE.Mesh(shoulderGeometry, bottleMaterial);
+      shoulder.position.y = 1.5;
+      shoulder.rotation.x = Math.PI;
+      group.add(shoulder);
+
+      var neckGeometry = new THREE.CylinderGeometry(0.2, 0.2, 1, 32);
+      var neck = new THREE.Mesh(neckGeometry, bottleMaterial);
+      neck.position.y = 2.4;
+      group.add(neck);
+
+      var labelGeometry = new THREE.CylinderGeometry(0.51, 0.51, 1, 32);
+      var label = new THREE.Mesh(labelGeometry, labelMaterial);
+      label.position.y = 0.7;
+      group.add(label);
+
+      group.position.set(x, y, z);
+
+      scene.add(group);
+      return group;
+    };
+
+    var bottle1 = createBottle(-1, 0, 0);
+
+    var bottle2Group = createBottle(2.25, 0, 0);
+
+    var corkGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.3, 32);
+    var cork = new THREE.Mesh(corkGeometry, corkMaterial);
+    cork.position.set(-1, 2.8, 0);
+    scene.add(cork);
+
+    var ambientLight = new THREE.AmbientLight(0x404040);
+    scene.add(ambientLight);
+
+    var pointLight = new THREE.PointLight(0xffffff, 1, 100);
+    pointLight.position.set(0, 5, 5);
+    scene.add(pointLight);
+
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 1).normalize();
+    scene.add(directionalLight);
+
+    camera.position.set(0, 2, 5);
+    camera.lookAt(0, 1, 0);
+
+    var corkTrajectory = () => {
+      var initialPosition = { x: -1, y: 2.8 };
+      var peakHeight = 3.5;
+      var hitPosition = { x: 2, y: 2 };
+
+      gsap.to(cork.position, {
+        x: hitPosition.x,
+        y: peakHeight,
+        duration: 1.5,
+        ease: "power2.out",
+        onUpdate: function () {
+          var progress = (cork.position.x - initialPosition.x) / (hitPosition.x - initialPosition.x);
+          cork.position.y = initialPosition.y + (4 * progress * (1 - progress) * (peakHeight - initialPosition.y));
+
+          if (progress >= 0.99) {
+            gsap.to(bottle2Group.rotation, { z: -Math.PI / 2, duration: 0.8 });
+            gsap.to(bottle2Group.position, { y: -1, duration: 0.8, ease: "power2.out" });
+
+            gsap.to(cork.position, {
+              y: 2.2,
+              x: 2.2,
+              duration: 0.15,
+              ease: "power2.out",
+              onComplete: () => {
+                gsap.to(cork.position, {
+                  y: 0,
+                  duration: 0.6,
+                  ease: "easeInOutQuad"
+                });
+              }
+            });
+          }
+        },
+      });
+    };
+
+    corkTrajectory();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
